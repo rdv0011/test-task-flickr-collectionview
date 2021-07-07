@@ -1,16 +1,28 @@
 //
-// Copyright © 2019 Robert Bosch GmbH. All rights reserved. 
+// Copyright © 2020 Dmitry Rybakov. All rights reserved. 
     
 
 import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    let flickrAPIKey = "" // Set Flickr API key here
 
+    static var shared: AppDelegate {
+        guard let appDelegate = (UIApplication.shared.delegate as? AppDelegate) else {
+            fatalError("Failed to cast app delegate")
+        }
 
+        return appDelegate
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+
+        guard flickrAPIKey.count > 0 else {
+            fatalError("Please set Flickr API key")
+        }
+
         return true
     }
 

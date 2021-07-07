@@ -1,5 +1,5 @@
 //
-// Copyright © 2019 Robert Bosch GmbH. All rights reserved. 
+// Copyright © 2020 Dmitry Rybakov. All rights reserved. 
     
 
 import UIKit
@@ -16,7 +16,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
         // Create the SwiftUI view that provides the window contents.
-        let contentView = ContentView()
+        let modelFactory = ViewModelFactory(apiKey: AppDelegate.shared.flickrAPIKey)
+        let photoViewModel = modelFactory.makePhotoViewModel()
+        let contentView = PhotoView(model: photoViewModel)
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
