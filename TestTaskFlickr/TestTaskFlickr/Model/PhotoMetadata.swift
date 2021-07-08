@@ -4,7 +4,7 @@
 
 import Foundation
 
-// Represents photo metadata
+/// Represents photo metadata
 struct PhotoMetadata: Decodable {
     let imageURL: URL?
 
@@ -24,12 +24,12 @@ extension PhotoMetadata: Hashable {
     }
 }
 
-// Represents a collection of photo metadata
+/// Represents a collection of photo metadata
 struct PhotoCollectionMetadata: Decodable {
     let photo: [PhotoMetadata]
 }
 
-// A root object for a collection of photo metadata
+/// A root object for a collection of photo metadata
 struct PhotoRootObjectMetadata: Decodable {
     let photos: PhotoCollectionMetadata
 }

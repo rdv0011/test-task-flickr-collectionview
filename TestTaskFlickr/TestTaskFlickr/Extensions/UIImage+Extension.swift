@@ -6,19 +6,64 @@ import UIKit
 import Combine
 
 extension UIImage {
-    static func imagePublisher(from imageURL: URL) -> AnyPublisher<UIImage?, Never> {
-        Future<UIImage?, Never>() { promise in
-            let task = URLSession.shared.dataTask(with: imageURL) { data, response, error in
-                guard let data = data, error == nil else {
-                    promise(.success(nil))
-                    return
-                }
-                DispatchQueue.main.async() {
-                    promise(.success(UIImage(data: data)))
-                }
-            }
-            task.resume()
+    var decompressedSize: Int {
+        let height = self.size.height
+        let width = self.size.width
+        var bytesPerRow = 4 * width
+        if bytesPerRow.truncatingRemainder(dividingBy: 16) != 0 {
+            bytesPerRow = ((bytesPerRow / 16) + 1) * 16
         }
-        .eraseToAnyPublisher()
+        return Int(height * bytesPerRow)
+    }
+    /// Send an asynchronous request. Once image is downloaded publishes a result
+    static func imagePublisher(from imageUrl: URL) -> AnyPublisher<UIImage?, Never> {
+        Just(URLRequest(url: imageUrl))
+            .map { imageRequest in
+                URLSession.shared.dataTaskPublisher(for: imageRequest)
+                    .map { output -> Data? in output.data }
+                    .replaceError(with: nil)
+            }
+            // Cancel previously made network requests
+            .switchToLatest()
+            .map { data in
+                guard let data = data else {
+                    return nil
+                }
+                return UIImage(data: data)
+            }
+            .eraseToAnyPublisher()
+    }
+
+    func decompressed() -> UIImage {
+        guard let imageRef = self.cgImage else {
+            print("Failed to get a context")
+            return UIImage()
+        }
+        let rect = CGRect(x: 0,
+                          y: 0,
+                          width: imageRef.width,
+                          height: imageRef.height)
+        // If colorSpace is not defined use RGB by default
+        let colorSpace = imageRef.colorSpace ?? CGColorSpaceCreateDeviceRGB()
+        // kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Little are the bit flags required so that the main thread doesn't have any conversions to do.
+        let bitmapInfo: UInt32 = CGImageAlphaInfo.premultipliedFirst.rawValue | CGBitmapInfo.byteOrder32Little.rawValue
+        guard let context = CGContext(data: nil,
+                                      width: Int(rect.size.width),
+                                      height: Int(rect.size.height),
+                                      bitsPerComponent: imageRef.bitsPerComponent,
+                                      bytesPerRow: imageRef.bytesPerRow,
+                                      space: colorSpace,
+                                      bitmapInfo: bitmapInfo) else {
+            print("CGContext creation failed")
+            return UIImage()
+        }
+
+        context.draw(imageRef, in: rect)
+        guard let decompressedImageRef = context.makeImage() else {
+            print("Failed to create image from context")
+            return UIImage()
+        }
+
+        return UIImage(cgImage: decompressedImageRef)
     }
 }

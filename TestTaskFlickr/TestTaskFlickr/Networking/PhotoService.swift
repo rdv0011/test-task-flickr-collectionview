@@ -5,7 +5,7 @@
 import Foundation
 import Combine
 
-class PhotoService: PhotoServicable {
+final class PhotoService: PhotoServicable {
     private let urlBuilder: PhotoServiceURLBuilding
     private let urlSession: URLSession
     private let jsonDecoder: JSONDecoder
@@ -18,7 +18,7 @@ class PhotoService: PhotoServicable {
         self.jsonDecoder = jsonDecoder
     }
 
-    func searchPhoto(by tags: String, page: Int, perPage: Int) -> AnyPublisher<PhotoMetadata, Error> {
+    func searchPhotos(by tags: String, page: Int, perPage: Int) -> AnyPublisher<PhotoMetadata, Error> {
         let searchUrlRequest = urlBuilder.searchPhotoURLRequest(for: tags, page: page, perPage: perPage)
 
         return Future<Data, Error>() { [weak self] promise in
@@ -48,10 +48,5 @@ class PhotoService: PhotoServicable {
             Publishers.Sequence(sequence: rootObject.photos.photo).eraseToAnyPublisher()
         }
         .eraseToAnyPublisher()
-    }
-
-    func photo(for id: String) -> AnyPublisher<Data, Error> {
-        fatalError("No implementation")
-        Just(Data()).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 }

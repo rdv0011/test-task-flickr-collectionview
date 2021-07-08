@@ -6,6 +6,7 @@ import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    // TODO: Get it from a the cloud securely and store it locally to the secure store
     let flickrAPIKey = "" // Set Flickr API key here
 
     static var shared: AppDelegate {

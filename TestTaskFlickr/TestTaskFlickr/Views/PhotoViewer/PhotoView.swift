@@ -9,7 +9,8 @@ struct PhotoView: View {
 
     var body: some View {
         VStack {
-            PhotoCollectionView(snapshot: $model.snapshot)
+            PhotoCollectionView(snapshot: $model.snapshot,
+                                imagePublisher: model.imagePublisher)
         }
     }
 }
