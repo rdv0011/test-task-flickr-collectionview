@@ -19,10 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
-        guard flickrAPIKey.count > 0 else {
-            fatalError("Please set Flickr API key")
-        }
-
         return true
     }
 

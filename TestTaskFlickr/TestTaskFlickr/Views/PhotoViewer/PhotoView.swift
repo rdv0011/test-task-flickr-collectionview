@@ -8,8 +8,9 @@ struct PhotoView: View {
     @ObservedObject var model: PhotoViewModel
 
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        VStack {
+            PhotoCollectionView(snapshot: $model.snapshot)
+        }
     }
 }
 
