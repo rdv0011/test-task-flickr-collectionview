@@ -4,7 +4,7 @@
 
 import Foundation
 
-class PhotoServiceURLBuilder {
+struct PhotoServiceURLBuilder {
     let baseURLString: String
     let apiKey: String
 
