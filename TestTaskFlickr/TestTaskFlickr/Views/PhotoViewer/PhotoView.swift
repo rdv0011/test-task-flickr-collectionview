@@ -6,13 +6,21 @@ import SwiftUI
 
 struct PhotoView: View {
     @ObservedObject var model: PhotoViewModel
-    @State private var isEditing = false
 
     var body: some View {
-        VStack {
-            SearchBar(text: $model.searchKeyword)
-            PhotoCollectionView(snapshot: $model.snapshot,
-                                photoPublisher: model.photoPublisher)
+        NavigationView {
+            VStack {
+                NavigationLink(destination: PhotoDetailView(imageTitle: $model.selectedImageTitle,
+                                                            image: $model.selectedImage),
+                               isActive: $model.showingDetailView) {
+                    EmptyView()
+                }
+                SearchBar(text: $model.searchKeyword)
+                PhotoCollectionView(snapshot: $model.snapshot,
+                                    selectedPhotoMetadata: $model.selectedPhotoMetadata,
+                                    photoProvider: model)
+            }
+            .navigationTitle("Search photo")
         }
     }
 }

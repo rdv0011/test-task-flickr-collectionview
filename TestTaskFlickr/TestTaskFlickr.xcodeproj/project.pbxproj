@@ -29,6 +29,7 @@
 		F167DB6D2696FBBB00DA4C9E /* UIAlertController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F167DB6C2696FBBB00DA4C9E /* UIAlertController+Extension.swift */; };
 		F167DB6F26979A3200DA4C9E /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F167DB6E26979A3200DA4C9E /* ImageCache.swift */; };
 		F167DB712698645000DA4C9E /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F167DB702698645000DA4C9E /* SearchBar.swift */; };
+		F167DB7326988FED00DA4C9E /* PhotoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F167DB7226988FED00DA4C9E /* PhotoDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		F167DB6C2696FBBB00DA4C9E /* UIAlertController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extension.swift"; sourceTree = "<group>"; };
 		F167DB6E26979A3200DA4C9E /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		F167DB702698645000DA4C9E /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		F167DB7226988FED00DA4C9E /* PhotoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +161,7 @@
 				F167DB3C2695672B00DA4C9E /* PhotoView.swift */,
 				F167DB5B2695901500DA4C9E /* PhotoViewModel.swift */,
 				F167DB622696D68000DA4C9E /* PhotoCollectionViewCell.swift */,
+				F167DB7226988FED00DA4C9E /* PhotoDetailView.swift */,
 			);
 			path = PhotoViewer;
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 				F167DB3B2695672B00DA4C9E /* SceneDelegate.swift in Sources */,
 				F167DB3D2695672B00DA4C9E /* PhotoView.swift in Sources */,
 				F167DB5C2695901500DA4C9E /* PhotoViewModel.swift in Sources */,
+				F167DB7326988FED00DA4C9E /* PhotoDetailView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
