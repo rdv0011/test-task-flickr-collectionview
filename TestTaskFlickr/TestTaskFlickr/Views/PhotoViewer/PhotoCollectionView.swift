@@ -9,6 +9,7 @@ import Combine
 /// A wrapper around UICollectionView
 struct PhotoCollectionView: UIViewRepresentable {
     typealias UIViewType = UICollectionView
+
     typealias DataSection = Int
     typealias DataObject = PhotoMetadata
     // MARK: - Layout constants
@@ -17,7 +18,8 @@ struct PhotoCollectionView: UIViewRepresentable {
 
     // Binding to update the UI.
     @Binding var snapshot: NSDiffableDataSourceSnapshot<DataSection, DataObject>
-    var photoPublisher: ((URL) -> AnyPublisher<UIImage?, Never>)
+    @Binding var selectedPhotoMetadata: PhotoMetadata?
+    weak var photoProvider: PhotoPublisherProviding?
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -45,6 +47,7 @@ struct PhotoCollectionView: UIViewRepresentable {
 
         // Set a datasource
         context.coordinator.dataSource = collectionViewDataSource(for: collectionView)
+        collectionView.delegate = context.coordinator
 
         return collectionView
     }
@@ -58,9 +61,9 @@ struct PhotoCollectionView: UIViewRepresentable {
             if let photoUrl = photoMetadata.photoUrl {
                 // Download an image asynchronously using an url from photo metadata
                 photoCell.activityIndicator.startAnimating()
-                photoCell.imageDownloadingSubscription = photoPublisher(photoUrl)
-                    // Remove previously set image
+                photoCell.imageDownloadingSubscription = photoProvider?.publisher(for: photoUrl)
                     .prepend(nil)
+                    // Remove previously set image
                     .handleEvents(receiveOutput: { _ in
                         photoCell.activityIndicator.stopAnimating()
                     })
@@ -81,13 +84,16 @@ struct PhotoCollectionView: UIViewRepresentable {
         dataSource?.apply(snapshot, animatingDifferences: true)
     }
 
-    class Coordinator: NSObject {
+    class Coordinator: NSObject, UICollectionViewDelegate {
         var parent: PhotoCollectionView
         var dataSource: UICollectionViewDiffableDataSource<DataSection, DataObject>?
-        var snapshot = NSDiffableDataSourceSnapshot<DataSection, DataObject>()
 
         init(_ collectionView: PhotoCollectionView) {
             self.parent = collectionView
+        }
+
+        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+            parent.selectedPhotoMetadata = dataSource?.itemIdentifier(for: indexPath)
         }
     }
 }

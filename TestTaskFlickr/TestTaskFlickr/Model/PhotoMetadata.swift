@@ -7,14 +7,17 @@ import Foundation
 /// Represents photo metadata
 struct PhotoMetadata: Decodable {
     let photoUrl: URL?
+    let title: String
 
     enum CodingKeys: String, CodingKey {
         case photoUrl = "url_m"
+        case title
     }
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         photoUrl = URL(string: try container.decode(String.self, forKey: .photoUrl))
+        title = try container.decode(String.self, forKey: .title)
     }
 }
 
