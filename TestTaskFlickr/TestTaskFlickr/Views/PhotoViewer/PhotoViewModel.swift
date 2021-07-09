@@ -41,7 +41,7 @@ final class PhotoViewModel: ObservableObject {
             .eraseToAnyPublisher()
     }
 
-    private func subscribe() {
+    private func searchResultsPublisher() -> AnyPublisher<[PhotoMetadata], Error> {
         $searchKeyword
             .debounce(for: 0.3, scheduler: DispatchQueue.main)
             .removeDuplicates()
@@ -51,9 +51,19 @@ final class PhotoViewModel: ObservableObject {
                 .filter { photoMetadata in photoMetadata.photoUrl != nil }
                 // Wait for all photo metadata to set it at one step to avoid too frequent UI updates
                 .collect()
+                .catch { error -> AnyPublisher<[PhotoMetadata], Error> in
+                    print("Failed to search: \(error)")
+                    return Empty<[PhotoMetadata], Error>().eraseToAnyPublisher()
+                }
             }
+            .eraseToAnyPublisher()
+    }
+
+    private func subscribe() {
+        searchResultsPublisher()
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { _ in
+            .sink(receiveCompletion: { completion in
+                print("Search subscription finished: \(completion)")
             }, receiveValue: { photoMetadata in
                 self.replaceItems(items: photoMetadata, to: Self.sectionIndex)
             })

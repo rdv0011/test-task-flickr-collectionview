@@ -46,6 +46,12 @@ final class PhotoService: PhotoServicable {
             dataTask.resume()
         }
         .decode(type: PhotoRootObjectMetadata.self, decoder: jsonDecoder)
+        .tryCatch { error -> AnyPublisher<PhotoRootObjectMetadata, Error> in
+            guard nil != error as? DecodingError else {
+                throw error
+            }
+            throw PhotoServiceError.unexpectedResponse
+        }
         .flatMap { rootObject -> AnyPublisher<PhotoMetadata, Error> in
             Publishers.Sequence(sequence: rootObject.photos.photo).eraseToAnyPublisher()
         }
