@@ -28,6 +28,7 @@
 		F167DB682696E6C800DA4C9E /* Publisher+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F167DB672696E6C800DA4C9E /* Publisher+Extension.swift */; };
 		F167DB6D2696FBBB00DA4C9E /* UIAlertController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F167DB6C2696FBBB00DA4C9E /* UIAlertController+Extension.swift */; };
 		F167DB6F26979A3200DA4C9E /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F167DB6E26979A3200DA4C9E /* ImageCache.swift */; };
+		F167DB712698645000DA4C9E /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F167DB702698645000DA4C9E /* SearchBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		F167DB672696E6C800DA4C9E /* Publisher+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Extension.swift"; sourceTree = "<group>"; };
 		F167DB6C2696FBBB00DA4C9E /* UIAlertController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extension.swift"; sourceTree = "<group>"; };
 		F167DB6E26979A3200DA4C9E /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
+		F167DB702698645000DA4C9E /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,6 +177,7 @@
 		F167DB6B2696F86500DA4C9E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F167DB702698645000DA4C9E /* SearchBar.swift */,
 				F167DB5D2695920A00DA4C9E /* ViewModelFactory.swift */,
 				F167DB5A26958FDE00DA4C9E /* PhotoViewer */,
 			);
@@ -300,6 +303,7 @@
 				F167DB6F26979A3200DA4C9E /* ImageCache.swift in Sources */,
 				F167DB652696DEC200DA4C9E /* UIImage+Extension.swift in Sources */,
 				F167DB5926958E4700DA4C9E /* PhotoServiceError.swift in Sources */,
+				F167DB712698645000DA4C9E /* SearchBar.swift in Sources */,
 				F167DB5026957D0E00DA4C9E /* PhotoMetadata.swift in Sources */,
 				F167DB682696E6C800DA4C9E /* Publisher+Extension.swift in Sources */,
 				F167DB53269583F000DA4C9E /* PhotoService.swift in Sources */,
