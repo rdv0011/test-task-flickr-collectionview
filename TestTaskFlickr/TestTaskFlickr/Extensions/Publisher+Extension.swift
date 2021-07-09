@@ -5,6 +5,7 @@ import Foundation
 import Combine
 
 extension Publisher where Failure == Never {
+    /// Helper function to avoid retain cycles
     func weakAssign<T: AnyObject>(
         to keyPath: ReferenceWritableKeyPath<T, Output>,
         on object: T

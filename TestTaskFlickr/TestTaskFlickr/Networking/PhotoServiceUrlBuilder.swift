@@ -4,20 +4,21 @@
 
 import Foundation
 
-struct PhotoServiceURLBuilder {
-    let baseURLString: String
+struct PhotoServiceUrlBuilder {
+    let baseUrlString: String
     let apiKey: String
+    private let flickBaseUrlString = "https://api.flickr.com/services/rest"
 
     init(apiKey: String) {
-        self.baseURLString = "https://api.flickr.com/services/rest"
+        self.baseUrlString = flickBaseUrlString
         self.apiKey = apiKey
     }
 }
 
-extension PhotoServiceURLBuilder: PhotoServiceURLBuilding {
+extension PhotoServiceUrlBuilder: PhotoServiceUrlBuilding {
 
-    func searchPhotoURLRequest(for tags: String, page: Int, perPage: Int) -> URLRequest {
-        guard var urlComponents = URLComponents(string: baseURLString) else {
+    func searchPhotoUrlRequest(for tags: String, page: Int, perPage: Int) -> URLRequest {
+        guard var urlComponents = URLComponents(string: baseUrlString) else {
 
             fatalError("Failed to initialize Flickr base URL")
         }

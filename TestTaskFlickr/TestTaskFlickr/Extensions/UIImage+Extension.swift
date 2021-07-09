@@ -6,6 +6,7 @@ import UIKit
 import Combine
 
 extension UIImage {
+    /// Returns estimated size of the decompressed image
     var decompressedSize: Int {
         let height = self.size.height
         let width = self.size.width
@@ -15,25 +16,9 @@ extension UIImage {
         }
         return Int(height * bytesPerRow)
     }
-    /// Send an asynchronous request. Once image is downloaded publishes a result
-    static func imagePublisher(from imageUrl: URL) -> AnyPublisher<UIImage?, Never> {
-        Just(URLRequest(url: imageUrl))
-            .map { imageRequest in
-                URLSession.shared.dataTaskPublisher(for: imageRequest)
-                    .map { output -> Data? in output.data }
-                    .replaceError(with: nil)
-            }
-            // Cancel previously made network requests
-            .switchToLatest()
-            .map { data in
-                guard let data = data else {
-                    return nil
-                }
-                return UIImage(data: data)
-            }
-            .eraseToAnyPublisher()
-    }
 
+
+    /// Returns a decompressed version of the image to speed up rendering in the UI
     func decompressed() -> UIImage {
         guard let imageRef = self.cgImage else {
             print("Failed to get a context")

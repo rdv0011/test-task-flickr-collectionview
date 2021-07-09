@@ -17,8 +17,7 @@ final class PhotoViewModel: ObservableObject {
     private static let sectionIndex = 1
     private let pageNumber = 1
     private let perPage = 20
-    private let searchKeyword = "Electrolux"
-    private let cache = ImageCache()
+    @Published var searchKeyword = "Electrolux"
 
     @Published var snapshot : NSDiffableDataSourceSnapshot<DataSection, DataObject> = {
         // Setup one section only
@@ -32,48 +31,43 @@ final class PhotoViewModel: ObservableObject {
 
     init(photoService: PhotoServicable) {
         self.photoService = photoService
-        // Send the initial request to get photos
-        requestPhotos()
+        // Subscribe for publishers
+        subscribe()
     }
 
-    func imagePublisher(_ imageUrl: URL) -> AnyPublisher<UIImage?, Never> {
-        Just(imageUrl)
-            .flatMap { [unowned self] imageUrl -> AnyPublisher<UIImage?, Never> in
-                guard let image = self.cache[imageUrl] else {
-                    // Download image asynchronously and cache it
-                    return UIImage.imagePublisher(from: imageUrl)
-                        .handleEvents(receiveOutput: { [unowned self] image in
-                            guard let image = image else {
-                                return
-                            }
-                            self.cache[imageUrl] = image
-                        })
-                        .eraseToAnyPublisher()
-                }
-                // Return decompressed cached image to avoid UI stuttering
-                return Just(image).eraseToAnyPublisher()
-            }
+    func photoPublisher(_ photoUrl: URL) -> AnyPublisher<UIImage?, Never> {
+        photoService.photo(from: photoUrl)
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
 
-    private func requestPhotos() {
-        photoService.searchPhotos(by: searchKeyword, page: pageNumber, perPage: perPage)
-            .receive(on: DispatchQueue.main)
-            // Filter out metadata with empty urls
-            .compactMap { photoMetadata in photoMetadata.imageURL != nil ? photoMetadata: nil }
-            // Wait for all photo metadata to set it at one step to avoid too frequent UI updates
-            .collect()
-            .sink { _ in
-            } receiveValue: { [unowned self] photoMetadata in
-                // Add metadata to the data source snapshot
-                self.addItems(items: photoMetadata, to: Self.sectionIndex)
+    private func subscribe() {
+        $searchKeyword
+            .debounce(for: 0.3, scheduler: DispatchQueue.main)
+            .removeDuplicates()
+            .flatMap { [photoService, pageNumber, perPage] keyword in
+                photoService.searchPhotos(by: keyword, page: pageNumber, perPage: perPage)
+                // Filter out metadata with empty urls
+                .filter { photoMetadata in photoMetadata.photoUrl != nil }
+                // Wait for all photo metadata to set it at one step to avoid too frequent UI updates
+                .collect()
             }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { _ in
+            }, receiveValue: { photoMetadata in
+                self.replaceItems(items: photoMetadata, to: Self.sectionIndex)
+            })
             .store(in: &subscriptions)
     }
 
-    // Helper function to add items
-    private func addItems(items: [DataObject], to section: DataSection) {
+    // Helper function to replace items
+    private func replaceItems(items: [DataObject], to section: DataSection) {
+        let identifiers = snapshot.itemIdentifiers
+        // Remove items from previous search result
+        if identifiers.count > 0 {
+            snapshot.deleteItems(identifiers)
+        }
+        // Add items from the latest search result
         if snapshot.sectionIdentifiers.contains(section) {
             snapshot.appendItems(items, toSection: section)
         } else {

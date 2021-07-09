@@ -6,21 +6,21 @@ import Foundation
 
 /// Represents photo metadata
 struct PhotoMetadata: Decodable {
-    let imageURL: URL?
+    let photoUrl: URL?
 
     enum CodingKeys: String, CodingKey {
-        case imageUrl = "url_m"
+        case photoUrl = "url_m"
     }
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        imageURL = URL(string: try container.decode(String.self, forKey: .imageUrl))
+        photoUrl = URL(string: try container.decode(String.self, forKey: .photoUrl))
     }
 }
 
 extension PhotoMetadata: Hashable {
     func hash(into hasher: inout Hasher) {
-        hasher.combine(imageURL)
+        hasher.combine(photoUrl)
     }
 }
 

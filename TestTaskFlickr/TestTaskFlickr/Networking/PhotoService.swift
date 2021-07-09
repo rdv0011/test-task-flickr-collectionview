@@ -4,13 +4,15 @@
 
 import Foundation
 import Combine
+import UIKit
 
 final class PhotoService: PhotoServicable {
-    private let urlBuilder: PhotoServiceURLBuilding
+    private let urlBuilder: PhotoServiceUrlBuilding
     private let urlSession: URLSession
     private let jsonDecoder: JSONDecoder
+    private let cache = ImageCache()
 
-    init(urlBuilder: PhotoServiceURLBuilding,
+    init(urlBuilder: PhotoServiceUrlBuilding,
          urlSession: URLSession = URLSession.shared,
          jsonDecoder: JSONDecoder = JSONDecoder()) {
         self.urlBuilder = urlBuilder
@@ -19,7 +21,7 @@ final class PhotoService: PhotoServicable {
     }
 
     func searchPhotos(by tags: String, page: Int, perPage: Int) -> AnyPublisher<PhotoMetadata, Error> {
-        let searchUrlRequest = urlBuilder.searchPhotoURLRequest(for: tags, page: page, perPage: perPage)
+        let searchUrlRequest = urlBuilder.searchPhotoUrlRequest(for: tags, page: page, perPage: perPage)
 
         return Future<Data, Error>() { [weak self] promise in
             guard let self = self else { return }
@@ -48,5 +50,32 @@ final class PhotoService: PhotoServicable {
             Publishers.Sequence(sequence: rootObject.photos.photo).eraseToAnyPublisher()
         }
         .eraseToAnyPublisher()
+    }
+
+    func photo(from url: URL) -> AnyPublisher<UIImage?, Never> {
+        /// Send an asynchronous request. Once image is downloaded publish the result
+        Just(url)
+            .map { photoUrl -> AnyPublisher<UIImage?, Never> in
+                guard let image = self.cache[photoUrl] else {
+                    // Download image asynchronously and cache it
+                    return urlSession.dataTaskPublisher(for: photoUrl)
+                        .map { output -> UIImage? in
+                            UIImage(data: output.data)
+                        }
+                        .replaceError(with: nil)
+                        .handleEvents(receiveOutput: { [unowned self] image in
+                            guard let image = image else {
+                                return
+                            }
+                            self.cache[photoUrl] = image
+                        })
+                        .eraseToAnyPublisher()
+                }
+                // Return decompressed cached image to avoid UI stuttering
+                return Just(image).eraseToAnyPublisher()
+            }
+            // Cancel previously made network requests
+            .switchToLatest()
+            .eraseToAnyPublisher()
     }
 }
