@@ -6,6 +6,7 @@ import UIKit
 import Combine
 
 extension UIImage {
+    /// Returns estimated size of the decompressed image
     var decompressedSize: Int {
         let height = self.size.height
         let width = self.size.width
@@ -16,6 +17,8 @@ extension UIImage {
         return Int(height * bytesPerRow)
     }
 
+
+    /// Returns a decompressed version of the image to speed up rendering in the UI
     func decompressed() -> UIImage {
         guard let imageRef = self.cgImage else {
             print("Failed to get a context")

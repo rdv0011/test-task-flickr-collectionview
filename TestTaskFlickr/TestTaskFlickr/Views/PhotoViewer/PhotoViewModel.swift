@@ -60,12 +60,14 @@ final class PhotoViewModel: ObservableObject {
             .store(in: &subscriptions)
     }
 
-    // Helper function to add items
+    // Helper function to replace items
     private func replaceItems(items: [DataObject], to section: DataSection) {
         let identifiers = snapshot.itemIdentifiers
+        // Remove items from previous search result
         if identifiers.count > 0 {
             snapshot.deleteItems(identifiers)
         }
+        // Add items from the latest search result
         if snapshot.sectionIdentifiers.contains(section) {
             snapshot.appendItems(items, toSection: section)
         } else {

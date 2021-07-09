@@ -10,7 +10,7 @@ class ViewModelFactory {
     private let apiKey: String
 
     func makePhotoViewModel() -> PhotoViewModel {
-        PhotoViewModel(photoService: PhotoService(urlBuilder: PhotoServiceURLBuilder(apiKey: apiKey)))
+        PhotoViewModel(photoService: PhotoService(urlBuilder: PhotoServiceUrlBuilder(apiKey: apiKey)))
     }
 
     init(apiKey: String) {

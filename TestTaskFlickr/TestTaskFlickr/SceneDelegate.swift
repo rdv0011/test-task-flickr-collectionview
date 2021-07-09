@@ -31,7 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             if AppDelegate.shared.flickrAPIKey.count <= 0 {
                 DispatchQueue.main.async {
                     UIAlertController.alert(title: "Error",
-                                            msg: "Please set Flickr API key",
+                                            msg: "Please set Flickr API key in the app delegate",
                                             target: rootViewController)
                 }
             }
