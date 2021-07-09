@@ -17,7 +17,7 @@ struct PhotoCollectionView: UIViewRepresentable {
 
     // Binding to update the UI.
     @Binding var snapshot: NSDiffableDataSourceSnapshot<DataSection, DataObject>
-    var imagePublisher: ((URL) -> AnyPublisher<UIImage?, Never>)
+    var photoPublisher: ((URL) -> AnyPublisher<UIImage?, Never>)
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -55,10 +55,12 @@ struct PhotoCollectionView: UIViewRepresentable {
 
                 return UICollectionViewCell()
             }
-            if let imageURL = photoMetadata.imageURL {
+            if let photoUrl = photoMetadata.photoUrl {
                 // Download an image asynchronously using an url from photo metadata
                 photoCell.activityIndicator.startAnimating()
-                photoCell.imageDownloadingSubscription = imagePublisher(imageURL)
+                photoCell.imageDownloadingSubscription = photoPublisher(photoUrl)
+                    // Remove previously set image
+                    .prepend(nil)
                     .handleEvents(receiveOutput: { _ in
                         photoCell.activityIndicator.stopAnimating()
                     })

@@ -3,6 +3,7 @@
 
 import Foundation
 import Combine
+import UIKit
 
 /// Manages networking JSON requests
 protocol PhotoServicable {
@@ -13,4 +14,9 @@ protocol PhotoServicable {
     ///   - page: Represents a page number of the photos group to return
     ///   - perPage: Represents a number of items on each page
     func searchPhotos(by tags: String, page: Int, perPage: Int) -> AnyPublisher<PhotoMetadata, Error>
+    /// Downloads photo by provided url
+    /// - Parameters:
+    ///   - url: Photo url
+    /// - Returns: An image otherwise nil if error happens
+    func photo(from url: URL) -> AnyPublisher<UIImage?, Never>
 }
