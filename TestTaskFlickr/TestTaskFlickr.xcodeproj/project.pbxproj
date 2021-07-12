@@ -30,6 +30,7 @@
 		F167DB6F26979A3200DA4C9E /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F167DB6E26979A3200DA4C9E /* ImageCache.swift */; };
 		F167DB712698645000DA4C9E /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F167DB702698645000DA4C9E /* SearchBar.swift */; };
 		F167DB7326988FED00DA4C9E /* PhotoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F167DB7226988FED00DA4C9E /* PhotoDetailView.swift */; };
+		F167DB752698A18F00DA4C9E /* ImageSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F167DB742698A18F00DA4C9E /* ImageSaver.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +61,7 @@
 		F167DB6E26979A3200DA4C9E /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		F167DB702698645000DA4C9E /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		F167DB7226988FED00DA4C9E /* PhotoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailView.swift; sourceTree = "<group>"; };
+		F167DB742698A18F00DA4C9E /* ImageSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSaver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +164,7 @@
 				F167DB5B2695901500DA4C9E /* PhotoViewModel.swift */,
 				F167DB622696D68000DA4C9E /* PhotoCollectionViewCell.swift */,
 				F167DB7226988FED00DA4C9E /* PhotoDetailView.swift */,
+				F167DB742698A18F00DA4C9E /* ImageSaver.swift */,
 			);
 			path = PhotoViewer;
 			sourceTree = "<group>";
@@ -308,6 +311,7 @@
 				F167DB5926958E4700DA4C9E /* PhotoServiceError.swift in Sources */,
 				F167DB712698645000DA4C9E /* SearchBar.swift in Sources */,
 				F167DB5026957D0E00DA4C9E /* PhotoMetadata.swift in Sources */,
+				F167DB752698A18F00DA4C9E /* ImageSaver.swift in Sources */,
 				F167DB682696E6C800DA4C9E /* Publisher+Extension.swift in Sources */,
 				F167DB53269583F000DA4C9E /* PhotoService.swift in Sources */,
 				F167DB4D26957B2500DA4C9E /* PhotoServicable.swift in Sources */,
