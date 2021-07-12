@@ -83,7 +83,7 @@ final class PhotoViewModel: ObservableObject {
                     fatalError("Nothing no show in a detail view because url is empty")
                 }
 
-                // Try to get image out of url
+                // Try to get image by url
                 // Since it was previously downloaded it should be in memory already
                 return self.publisher(for: photoUrl)
                     // Ignore nil images

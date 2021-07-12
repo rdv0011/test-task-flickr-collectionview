@@ -16,5 +16,22 @@ struct PhotoDetailView: View {
         }
         .navigationTitle(imageTitle)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Save") {
+                    let imageSaver = ImageSaver() { error in
+                        if let error = error {
+                            print("Filed to save photo:\(String(describing: error))")
+                            UIAlertController.alert(title: "Error",
+                                                    msg: "Failed to save photo")
+                        } else {
+                            UIAlertController.alert(title: "Success",
+                                                    msg: "Photo was successfully saved")
+                        }
+                    }
+                    imageSaver.writeToPhotoAlbum(image: image)
+                }
+            }
+        }
     }
 }
