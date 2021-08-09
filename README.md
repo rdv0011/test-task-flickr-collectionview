@@ -1,5 +1,5 @@
 # test-task-flickr-collectionview
-Use Flickr API to show a limited number of photos in UICollectionView
+Use Flickr API to show a limited number of photos in UICollectionView and save a selected image to your Photo Library
 
 ***Important: To run the project go to the AppDelegate.swift and set your Flickr API ket.***
 
