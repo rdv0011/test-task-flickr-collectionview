@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		224E3550D7A1DAEEE431E2BC /* Pods_TestTaskFlickr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AAF44E3D1D4EBFBB27DF230 /* Pods_TestTaskFlickr.framework */; };
+		F107502526C1345F000705AC /* NetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F107502426C1345F000705AC /* NetworkRequest.swift */; };
+		F107502D26C168E9000705AC /* PhotoServiceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F107502C26C168E9000705AC /* PhotoServiceRequest.swift */; };
+		F107502F26C17831000705AC /* PhotoServiceConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F107502E26C17831000705AC /* PhotoServiceConfiguration.swift */; };
 		F167DB392695672B00DA4C9E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F167DB382695672B00DA4C9E /* AppDelegate.swift */; };
 		F167DB3B2695672B00DA4C9E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F167DB3A2695672B00DA4C9E /* SceneDelegate.swift */; };
 		F167DB3D2695672B00DA4C9E /* PhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F167DB3C2695672B00DA4C9E /* PhotoView.swift */; };
@@ -37,6 +40,9 @@
 		1AAF44E3D1D4EBFBB27DF230 /* Pods_TestTaskFlickr.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestTaskFlickr.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		33A580451CDA0D9BA9911461 /* Pods-TestTaskFlickr.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestTaskFlickr.debug.xcconfig"; path = "Target Support Files/Pods-TestTaskFlickr/Pods-TestTaskFlickr.debug.xcconfig"; sourceTree = "<group>"; };
 		9E5F7256888607526292D346 /* Pods-TestTaskFlickr.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestTaskFlickr.release.xcconfig"; path = "Target Support Files/Pods-TestTaskFlickr/Pods-TestTaskFlickr.release.xcconfig"; sourceTree = "<group>"; };
+		F107502426C1345F000705AC /* NetworkRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRequest.swift; sourceTree = "<group>"; };
+		F107502C26C168E9000705AC /* PhotoServiceRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoServiceRequest.swift; sourceTree = "<group>"; };
+		F107502E26C17831000705AC /* PhotoServiceConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoServiceConfiguration.swift; sourceTree = "<group>"; };
 		F167DB352695672B00DA4C9E /* TestTaskFlickr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestTaskFlickr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F167DB382695672B00DA4C9E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F167DB3A2695672B00DA4C9E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -144,6 +150,9 @@
 				F167DB54269584B900DA4C9E /* PhotoServiceUrlBuilding.swift */,
 				F167DB56269585AD00DA4C9E /* PhotoServiceUrlBuilder.swift */,
 				F167DB5826958E4700DA4C9E /* PhotoServiceError.swift */,
+				F107502426C1345F000705AC /* NetworkRequest.swift */,
+				F107502C26C168E9000705AC /* PhotoServiceRequest.swift */,
+				F107502E26C17831000705AC /* PhotoServiceConfiguration.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -311,10 +320,13 @@
 				F167DB5926958E4700DA4C9E /* PhotoServiceError.swift in Sources */,
 				F167DB712698645000DA4C9E /* SearchBar.swift in Sources */,
 				F167DB5026957D0E00DA4C9E /* PhotoMetadata.swift in Sources */,
+				F107502D26C168E9000705AC /* PhotoServiceRequest.swift in Sources */,
+				F107502526C1345F000705AC /* NetworkRequest.swift in Sources */,
 				F167DB752698A18F00DA4C9E /* ImageSaver.swift in Sources */,
 				F167DB682696E6C800DA4C9E /* Publisher+Extension.swift in Sources */,
 				F167DB53269583F000DA4C9E /* PhotoService.swift in Sources */,
 				F167DB4D26957B2500DA4C9E /* PhotoServicable.swift in Sources */,
+				F107502F26C17831000705AC /* PhotoServiceConfiguration.swift in Sources */,
 				F167DB612696CE2100DA4C9E /* PhotoCollectionView.swift in Sources */,
 				F167DB57269585AD00DA4C9E /* PhotoServiceUrlBuilder.swift in Sources */,
 				F167DB55269584B900DA4C9E /* PhotoServiceUrlBuilding.swift in Sources */,

@@ -1,24 +1,29 @@
 //
-// Copyright © 2020 Dmitry Rybakov. All rights reserved. 
-    
+// Copyright © 2020 Dmitry Rybakov. All rights reserved.
 
 import Foundation
 
 struct PhotoServiceUrlBuilder {
-    let baseUrlString: String
+    let serviceBaseUrl: PhotoServiceBaseUrl
     let apiKey: String
-    private let flickBaseUrlString = "https://api.flickr.com/services/rest"
 
-    init(apiKey: String) {
-        self.baseUrlString = flickBaseUrlString
+    init(apiKey: String, serviceBaseUrl: PhotoServiceBaseUrl) {
+        self.serviceBaseUrl = serviceBaseUrl
         self.apiKey = apiKey
     }
 }
 
 extension PhotoServiceUrlBuilder: PhotoServiceUrlBuilding {
 
-    func searchPhotoUrlRequest(for tags: String, page: Int, perPage: Int) -> URLRequest {
-        guard var urlComponents = URLComponents(string: baseUrlString) else {
+    func makeURLRequest(from serviceRequest: PhotoServiceRequest) -> URLRequest {
+        switch serviceRequest {
+        case .searchPhoto(let tags, let page, let perPage):
+            return makeSearchPhotoUrlRequest(for: tags, page: page, perPage: perPage)
+        }
+    }
+
+    private func makeSearchPhotoUrlRequest(for tags: String, page: Int, perPage: Int) -> URLRequest {
+        guard var urlComponents = URLComponents(string: serviceBaseUrl.rawValue) else {
 
             fatalError("Failed to initialize Flickr base URL")
         }

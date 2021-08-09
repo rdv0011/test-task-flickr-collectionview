@@ -1,5 +1,5 @@
 //
-// Copyright © Dmitry Rybakov. All rights reserved.
+// Copyright © 2020 Dmitry Rybakov. All rights reserved.
 
 import Foundation
 import Combine
@@ -13,7 +13,7 @@ protocol PhotoServicable {
     ///   - tags: A string which is used as a search query
     ///   - page: Represents a page number of the photos group to return
     ///   - perPage: Represents a number of items on each page
-    func searchPhotos(by tags: String, page: Int, perPage: Int) -> AnyPublisher<PhotoMetadata, Error>
+    func searchPhotos(by tags: String, page: Int, perPage: Int) -> AnyPublisher<PhotoMetadata, PhotoServiceError>
     /// Downloads photo by provided url
     /// - Parameters:
     ///   - url: Photo url

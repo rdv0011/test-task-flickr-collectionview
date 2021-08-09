@@ -27,6 +27,6 @@ struct PhotoView: View {
 
 struct PhotoView_Previews: PreviewProvider {
     static var previews: some View {
-        PhotoView(model: ViewModelFactory(apiKey: "").makePhotoViewModel())
+        PhotoView(model: ViewModelFactory(apiKey: "", photoServiceConfiguration: ServiceEnvironment.dev.makePhotoServiceConfiguration()).makePhotoViewModel())
     }
 }

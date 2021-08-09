@@ -7,55 +7,40 @@ import Combine
 import UIKit
 
 final class PhotoService: PhotoServicable {
-    private let urlBuilder: PhotoServiceUrlBuilding
-    private let urlSession: URLSession
-    private let jsonDecoder: JSONDecoder
-    private let cache = ImageCache()
-
-    init(urlBuilder: PhotoServiceUrlBuilding,
-         urlSession: URLSession = URLSession.shared,
-         jsonDecoder: JSONDecoder = JSONDecoder()) {
-        self.urlBuilder = urlBuilder
-        self.urlSession = urlSession
-        self.jsonDecoder = jsonDecoder
+    struct Configuration {
+        let baseUrl: PhotoServiceBaseUrl
+        let urlSession: URLSession
+        let jsonDecoder: JSONDecoder
     }
 
-    func searchPhotos(by tags: String, page: Int, perPage: Int) -> AnyPublisher<PhotoMetadata, Error> {
-        let searchUrlRequest = urlBuilder.searchPhotoUrlRequest(for: tags, page: page, perPage: perPage)
+    private let urlBuilder: PhotoServiceUrlBuilding
+    private let cache = ImageCache()
+    private let configuration: Configuration
 
-        return Future<Data, Error>() { [weak self] promise in
-            guard let self = self else { return }
+    init(urlBuilder: PhotoServiceUrlBuilding, configuration: Configuration) {
+        self.urlBuilder = urlBuilder
+        self.configuration = configuration
+    }
 
-            let dataTask = self.urlSession.dataTask(with: searchUrlRequest) { data, response, error in
-                guard
-                    let data = data,                              // is there data
-                    let response = response as? HTTPURLResponse,  // is there HTTP response
-                    200 ..< 300 ~= response.statusCode,           // is statusCode 2XX
-                    error == nil                                  // was there no error
-                else {
-                    if let error = error {
-                        promise(.failure(error))
-                    } else {
-                        // No error is provided. Use ```.unexpectedResponse``` as a default one.
-                        promise(.failure(PhotoServiceError.unexpectedResponse))
-                    }
-                    return
-                }
-                promise(.success(data))
+    private func makeSearchPhotosUrlRequest(by tags: String, page: Int, perPage: Int) -> DecodableNetworkRequest<PhotoRootObjectMetadata> {
+        let searchUrlRequest = urlBuilder.makeURLRequest(from: .searchPhoto(tags: tags,
+                                                                            page: page,
+                                                                            perPage: perPage))
+        return DecodableNetworkRequest<PhotoRootObjectMetadata>(request: searchUrlRequest,
+                                                                urlSession: configuration.urlSession,
+                                                                jsonDecoder: configuration.jsonDecoder)
+    }
+
+    func searchPhotos(by tags: String, page: Int, perPage: Int) -> AnyPublisher<PhotoMetadata, PhotoServiceError> {
+        makeSearchPhotosUrlRequest(by: tags, page: page, perPage: perPage)
+            .publisher
+            .map { rootObject -> [PhotoMetadata] in
+                rootObject.photos.photo
             }
-            dataTask.resume()
-        }
-        .decode(type: PhotoRootObjectMetadata.self, decoder: jsonDecoder)
-        .tryCatch { error -> AnyPublisher<PhotoRootObjectMetadata, Error> in
-            guard nil != error as? DecodingError else {
-                throw error
+            .flatMap { photoUrls -> AnyPublisher<PhotoMetadata, PhotoServiceError> in
+                Publishers.Sequence(sequence: photoUrls).eraseToAnyPublisher()
             }
-            throw PhotoServiceError.unexpectedResponse
-        }
-        .flatMap { rootObject -> AnyPublisher<PhotoMetadata, Error> in
-            Publishers.Sequence(sequence: rootObject.photos.photo).eraseToAnyPublisher()
-        }
-        .eraseToAnyPublisher()
+            .eraseToAnyPublisher()
     }
 
     func photo(from url: URL) -> AnyPublisher<UIImage?, Never> {
@@ -64,16 +49,16 @@ final class PhotoService: PhotoServicable {
             .map { photoUrl -> AnyPublisher<UIImage?, Never> in
                 guard let image = self.cache[photoUrl] else {
                     // Download image asynchronously and cache it
-                    return urlSession.dataTaskPublisher(for: photoUrl)
+                    return configuration.urlSession.dataTaskPublisher(for: photoUrl)
                         .map { output -> UIImage? in
                             UIImage(data: output.data)
                         }
                         .replaceError(with: nil)
-                        .handleEvents(receiveOutput: { [unowned self] image in
+                        .handleEvents(receiveOutput: { [weak self] image in
                             guard let image = image else {
                                 return
                             }
-                            self.cache[photoUrl] = image
+                            self?.cache[photoUrl] = image
                         })
                         .eraseToAnyPublisher()
                 }
