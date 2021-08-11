@@ -10,5 +10,5 @@ enum PhotoServiceRequest {
     ///   - tags: A string which is used as a search query
     ///   - page: Represents a page number of the photos group to return
     ///   - perPage: Represents a number of items on each page
-    case searchPhoto(tags: String, page: Int, perPage: Int)
+    case searchPhoto(tags: String,page: Int,perPage: Int)
 }

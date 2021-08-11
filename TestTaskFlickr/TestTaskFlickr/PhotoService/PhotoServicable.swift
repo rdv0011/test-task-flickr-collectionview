@@ -13,7 +13,7 @@ protocol PhotoServicable {
     ///   - tags: A string which is used as a search query
     ///   - page: Represents a page number of the photos group to return
     ///   - perPage: Represents a number of items on each page
-    func searchPhotos(by tags: String, page: Int, perPage: Int) -> AnyPublisher<PhotoMetadata, PhotoServiceError>
+    func searchPhotos(for tags: String,at page: Int,max perPage: Int) -> AnyPublisher<PhotoMetadata, NetworkRequestError>
     /// Downloads photo by provided url
     /// - Parameters:
     ///   - url: Photo url

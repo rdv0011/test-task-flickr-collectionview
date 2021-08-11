@@ -15,8 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
         // Create the SwiftUI view that provides the window contents.
-        let modelFactory = ViewModelFactory(apiKey: AppDelegate.shared.flickrAPIKey,
-                                            photoServiceConfiguration: ServiceEnvironment.dev.makePhotoServiceConfiguration())
+        let modelFactory = ViewModelFactory(photoServiceConfiguration: ServiceEnvironment.dev.makePhotoServiceConfiguration(apiKey: AppDelegate.shared.flickrAPIKey))
         let photoViewModel = modelFactory.makePhotoViewModel()
         let contentView = PhotoView(model: photoViewModel)
         let rootViewController = UIHostingController(rootView: contentView)

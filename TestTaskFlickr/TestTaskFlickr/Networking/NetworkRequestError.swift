@@ -4,9 +4,10 @@
 import Foundation
 
 /// Represents networking related errors
-enum PhotoServiceError: Error {
+enum NetworkRequestError: Error {
     case httpRequestFailed(statusCode: Int)
     case serverError(Error)
+    /// Triggered when there is no HTTP status code available for some reason
     case unexpectedResponse
     case failedToParse(Error)
 }

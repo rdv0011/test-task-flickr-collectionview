@@ -50,7 +50,7 @@ final class PhotoViewModel: ObservableObject {
             .debounce(for: 0.3, scheduler: DispatchQueue.main)
             .removeDuplicates()
             .flatMap { [photoService, pageNumber, perPage] keyword in
-                photoService.searchPhotos(by: keyword, page: pageNumber, perPage: perPage)
+                photoService.searchPhotos(for: keyword, at: pageNumber, max: perPage)
                 // Filter out metadata with empty urls
                 .filter { photoMetadata in photoMetadata.photoUrl != nil }
                 // Wait for all photo metadata to set it at one step to avoid too frequent UI updates
